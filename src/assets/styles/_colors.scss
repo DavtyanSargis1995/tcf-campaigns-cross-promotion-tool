@@ -1,0 +1,33 @@
+// COLOR VARIABLES // ============================== //
+
+// white
+$white: #fff;
+
+
+// red
+$danger: rgba(250,92,124,.7);
+
+
+// palletes of gray
+$gray: #333;
+$gray-dark: #6C757D;
+$gray-light: #D6DDE3;
+$gray-border: #c6c6c6;
+$gray-lighter: #F4F4F4;
+$gray-primary: #8DA0A9;
+$hl-color: #2196F3;
+$gray-heading: #858585;
+$gray-background: #E5E5E5;
+
+// pallets of purple
+$purple: #727CF5;
+$purple-dark: #5E67D1;
+$purple-gradient: radial-gradient(
+                    205.56% 311.83% at 34.65% -3.04%,
+                    rgba(0, 0, 0, 0) 0%,
+                    rgba(0, 0, 0, 0.47) 100%),
+                  radial-gradient(
+                    87.1% 348.28% at 26.22% 31.96%,
+                    #4425C1 0%,
+                    #2D32A9 100%),
+                  #4326B8;

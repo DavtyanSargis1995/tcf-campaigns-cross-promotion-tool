@@ -1,0 +1,162 @@
+@import '~bootstrap/dist/css/bootstrap-grid.min.css';
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import 'colors';
+
+// COMMON RESSETTING STYLES // ============================== //
+html, body {
+  font-family: 'Nunito', sans-serif;
+}
+*, *::after, *::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+// COLORING STYLES // ============================== //
+
+.purple-background {
+  background:$purple-gradient;
+}
+
+.gray-background {
+  background: $gray-background;
+}
+
+
+
+//  BUTTONS // ============================== //
+
+.btn {
+  border-radius: 5px;
+  font-weight: bold;
+  display: block;
+  font-size: 16px;
+  line-height: 23px;
+  letter-spacing: 0.056px;
+  border: none;
+  padding: 10px;
+  text-align: center;
+  outline: none;
+  cursor: pointer;
+  background: transparent;
+  transition: .4s;
+}
+
+.btn-large {
+  width: 100%;
+}
+
+.btn-purple-outlined {
+  color: $purple;
+  background-color: transparent;
+  border: 1px solid $purple;
+  &:hover, &.router-link-exact-active {
+    color: $white;
+    background: $purple-dark;
+    font-weight: bold;
+  }
+}
+
+.btn-purple{
+  background: $purple;
+  color: $white;
+  &:hover {
+    background: $purple-dark;
+  }
+}
+
+.btn-purple-link{
+  color: $purple;
+}
+
+.btn-outline-primary{
+  color: $gray-primary;
+  background-color: transparent;
+  border: 1px solid $gray-primary;
+  &:hover {
+    background-color: $gray-primary;
+    color: $white;
+  }
+}
+
+
+//  TYPOGRAPHY
+
+p {
+  font-size: 14px;
+  color: $gray-dark;
+  margin-bottom: 10px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-small {
+  font-size: 13px;
+}
+
+.heading {
+  h1 {
+    font-size: 19px;
+    line-height: 23px;
+    color: $gray;
+    margin-bottom: 12px;
+  }
+}
+
+
+
+//  ALERTS // ============================== //
+
+.alert {
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+}
+
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+.alert-success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+
+// OTHER STYLES
+
+
+.link{
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 19px;
+  color: $purple;
+}
+
+.line {
+  border: 1px solid $gray-light;
+}
+
+.error {
+  color: $danger;
+  font-size: 16px;
+}
