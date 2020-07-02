@@ -1,5 +1,6 @@
-import { currentUser, auth } from '../firebaseConfig';
 import router from '../router';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 export default {
   namespaced: true,
@@ -23,16 +24,18 @@ export default {
     async signUserUp ({ commit }, payload) {
       commit('setLoading', true, { root: true });
       commit('clearError', null, { root: true });
+      let user = null;
       try {
-        await auth.createUserWithEmailAndPassword(payload.email, payload.password);
+        await firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password);
         commit('setLoading', false, { root: true });
-        await currentUser.sendEmailVerification();
-        await currentUser.updateProfile({
+        user = firebase.auth().currentUser;
+        await user.sendEmailVerification();
+        await user.updateProfile({
           displayName: payload.name
         });
         commit('setStatus', 'success');
       } catch (error) {
-        commit('setError', error.message, { root: true });
+        commit('setLoading', false, { root: true });
         commit('setError', error.message, { root: true });
       }
     },
@@ -40,21 +43,25 @@ export default {
       commit('setLoading', true, { root: true });
       commit('clearError', null, { root: true });
       try {
-        await auth.signInWithEmailAndPassword(payload.email, payload.password);
+        let user = null;
+        await firebase.auth().signInWithEmailAndPassword(payload.email, payload.password);
         commit('setLoading', false, { root: true });
         commit('setStatus', 'success');
-        if (!currentUser.emailVerified) {
+        user = firebase.auth().currentUser;
+        if (!user.emailVerified) {
           commit('setVerified', false);
           return;
         }
         const newUser = {
-          id: currentUser.uid,
-          name: currentUser.displayName,
-          email: currentUser.email
+          id: user.uid,
+          name: user.displayName,
+          email: user.email
         };
         commit('setUser', newUser);
         commit('setVerified', true);
-        // router.push({ path: '/campaigns' });
+        router.push({ path: '/campaigns' }).catch(error => {
+          console.log('Everything is ok', error);
+        });
       } catch (error) {
         commit('setLoading', false, { root: true });
         commit('setError', error.message, { root: true });
@@ -77,7 +84,7 @@ export default {
       commit('setLoading', true, { root: true });
       commit('clearError', null, { root: true });
       try {
-        await auth.sendPasswordResetEmail(email);
+        await firebase.auth().sendPasswordResetEmail(email);
         commit('setLoading', false, { root: true });
         return Promise.resolve('Please check you email to reset your password');
       } catch (error) {
@@ -86,7 +93,7 @@ export default {
       }
     },
     logout ({ commit }) {
-      auth.signOut();
+      firebase.auth().signOut();
       commit('setUser', null);
       router.push({ path: '/login' });
     }

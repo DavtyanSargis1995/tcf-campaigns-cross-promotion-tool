@@ -1,5 +1,6 @@
 <template>
   <Card max-width="450">
+    <p class="alert alert-danger" v-if="errorMessage">{{errorMessage}}</p>
     <form @submit.prevent="handleSubmit" novalidate v-if="!status">
       <div class="heading text-center">
         <h1>Sign Up</h1>

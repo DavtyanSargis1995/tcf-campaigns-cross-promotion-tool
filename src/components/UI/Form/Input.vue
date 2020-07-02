@@ -1,7 +1,7 @@
 <template>
   <div class="mb-3">
     <div v-if="type!=='textarea'" :class="{'form-group': true, 'form-group-error error': error}">
-      <input :type="type" class="form-input" v-model="value" required />
+      <input :type="type" class="form-input" v-model="value" required autocomplete="off" />
       <span class="highlight"></span>
       <label>{{label}}</label>
       <font-awesome-icon class="icon" v-if="icon" :icon="icon" @click="showPassword" />

@@ -21,6 +21,7 @@
       >
         <p class="error text-left mb-2" v-for="(message,index) in field.errorMessages" :key="index">
           <small v-if="$v[field.fieldName].$dirty && !$v[field.fieldName][index]">{{message}}</small>
+          <small v-if="$v[field.fieldName].$dirty && !$v[field.fieldName][index]">{{message}}</small>
         </p>
       </Input>
       <p class="forgot-password text-right mt-2">

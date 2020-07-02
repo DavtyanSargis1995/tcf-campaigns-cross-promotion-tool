@@ -51,8 +51,7 @@ main {
 </style>
 
 <script>
-import { auth } from './firebaseConfig';
-import 'firebase/auth';
+import * as firebase from 'firebase';
 import Loading from './components/UI/Loading';
 import CreateCampaign from './components/Campaigns/CreateCampaign';
 import Logout from './components/Auth/Logout';
@@ -72,7 +71,7 @@ export default {
   },
   created () {
     this.$store.commit('setLoading', true);
-    auth.onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.$store.dispatch('user/autoSignIn', user);
       }

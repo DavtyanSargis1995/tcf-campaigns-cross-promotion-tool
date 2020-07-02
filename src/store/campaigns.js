@@ -1,14 +1,10 @@
 import axios from 'axios';
 import firebase from 'firebase/app';
-import 'firebase/database';
 import 'firebase/storage';
-
-const db = firebase.database();
-const storage = firebase.storage();
+import 'firebase/database';
 
 const setQueryParamas = (size, platform, matchParam, filter) => {
   const queryParams = {
-    size: size,
     query: {
       bool: {
         must: [
@@ -21,6 +17,10 @@ const setQueryParamas = (size, platform, matchParam, filter) => {
       }
     }
   };
+
+  if (size) {
+    queryParams.size = size;
+  }
 
   if (matchParam) {
     queryParams.query.bool.must.push(matchParam);
@@ -112,12 +112,12 @@ export default {
     async deleteCampaign ({ commit }, payload) {
       commit('setLoading', true, { root: true });
       commit('clearError', null, { root: true });
-      await db.ref('campaigns/').child(payload.id).remove();
+      await firebase.database().ref('campaigns/').child(payload.id).remove();
 
       // if it has an image, delete it toolbar
       if (payload.filename) {
         try {
-          storage.ref().child(payload.filename).delete();
+          firebase.storage().ref().child(payload.filename).delete();
         } catch (error) {
           commit('setError', error.message, { root: true });
         }
@@ -144,10 +144,10 @@ export default {
       try {
         if (state.campaign.id) {
           // if we already have this campaign in the database, update its info
-          await db.ref('campaigns').child(state.campaign.id).update(payload);
+          await firebase.database().ref('campaigns').child(state.campaign.id).update(payload);
         } else {
           // if it's a new one, add it to the database
-          data = await db.ref('/campaigns').push(payload);
+          data = await firebase.database().ref('/campaigns').push(payload);
           commit('addTitleForUniqueness', state.campaign.title);
         }
         key = data ? data.key : state.campaign.id;
@@ -162,9 +162,9 @@ export default {
         // if we have an image to upload
         const filename = state.campaign.image.name;
         const ext = filename.slice(filename.lastIndexOf('.'));
-        const fileData = await storage.ref('campaigns/' + key + ext).put(state.campaign.image);
+        const fileData = await firebase.storage().ref('campaigns/' + key + ext).put(state.campaign.image);
         const downloadURL = await fileData.ref.getDownloadURL();
-        await db.ref('campaigns').child(key).update({
+        await firebase.database().ref('campaigns').child(key).update({
           imageUrl: downloadURL,
           filename: 'campaigns/' + key + ext
         });
@@ -208,13 +208,13 @@ export default {
     async loadCampaigns ({ commit }) {
       commit('setLoading', true, { root: true });
       try {
-        const data = await db.ref('campaigns').once('value');
+        const data = await firebase.database().ref('campaigns').once('value');
         const campaigns = [];
         const obj = data.val();
         const ids = [];
         for (const key in obj) {
-          ids.push(obj[key].hitId);
           if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            ids.push(obj[key].hitId);
             campaigns.push({
               id: key,
               title: obj[key].title,
@@ -236,7 +236,7 @@ export default {
           }
         };
 
-        const params = JSON.stringify(setQueryParamas(campaigns.length, 'kickstarter', null, filter));
+        const params = JSON.stringify(setQueryParamas(null, 'kickstarter', null, filter));
         const response = await axios.post(CROSSPROM_URL, params, { headers: CROSSPROM_HEADERS });
         const responseData = response.data;
         const hits = responseData.hits.hits.map((item, index) => ({

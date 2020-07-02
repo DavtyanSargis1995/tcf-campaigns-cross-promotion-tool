@@ -1,6 +1,9 @@
 <template>
   <div class="container">
     <add-campaign />
+    <div class="alert alert-success">
+      Note, you can only edit and delete the cards you've created.
+    </div>
     <div class="row" v-if="campaigns.length">
       <campaign v-for="item in campaigns" :key="item.id" :item="item"/>
     </div>

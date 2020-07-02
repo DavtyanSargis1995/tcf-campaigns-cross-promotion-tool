@@ -1,7 +1,4 @@
 import firebase from 'firebase/app';
-import 'firebase/database';
-import 'firebase/storage';
-import 'firebase/auth';
 
 // firebase init goes here
 const firebaseConfig = {
@@ -14,13 +11,3 @@ const firebaseConfig = {
   appId: '1:835715782045:web:2c6f23b3cf40fb898d4b74'
 };
 firebase.initializeApp(firebaseConfig);
-
-// firebase utils
-
-const auth = firebase.auth();
-const currentUser = auth.currentUser;
-
-export {
-  auth,
-  currentUser
-};
